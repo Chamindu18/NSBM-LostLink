@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+import { findUserById } from "../repositories/auth.repository";
+
 import {
   createUser,
   findUserByEmail,
@@ -73,4 +75,16 @@ export const loginUser = async (data: LoginInput) => {
     token,
     user: userWithoutPassword,
   };
+};
+
+export const getCurrentUser = async (userId: string) => {
+  const user = await findUserById(userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const { password, ...userWithoutPassword } = user;
+
+  return userWithoutPassword;
 };

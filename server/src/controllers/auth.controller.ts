@@ -7,6 +7,9 @@ import { registerSchema } from "../validators/auth.validator";
 import { loginUser } from "../services/auth.service";
 import { loginSchema } from "../validators/auth.validator";
 
+import { AuthRequest } from "../types/authRequest.types";
+import { getCurrentUser } from "../services/auth.service";
+
 export const login = async (
   req: Request,
   res: Response
@@ -53,6 +56,30 @@ export const register = async (
         error instanceof Error
           ? error.message
           : "Registration failed",
+    });
+  }
+};
+
+export const me = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const user = await getCurrentUser(
+      req.user!.userId
+    );
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed",
     });
   }
 };
