@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.routes";
+import itemRoutes from "./routes/item.routes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/items", itemRoutes);
 
 app.get("/", (req, res) => {
   res.send("NSBM LostLink API Running");
