@@ -15,3 +15,24 @@ export const createItem = async (
     data,
   });
 };
+
+export const getAllItems = async () => {
+  return prisma.item.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          studentId: true,
+        },
+      },
+      category: true,
+      location: true,
+      images: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};

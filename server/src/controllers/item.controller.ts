@@ -3,7 +3,7 @@ import { Response } from "express";
 import { AuthRequest } from "../types/authRequest.types";
 
 import { createItemSchema } from "../validators/item.validator";
-
+import { fetchAllItems } from "../services/item.service";
 import { createNewItem } from "../services/item.service";
 
 export const createItem = async (
@@ -30,6 +30,25 @@ export const createItem = async (
         error instanceof Error
           ? error.message
           : "Failed to create item",
+    });
+  }
+};
+
+export const getItems = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const items = await fetchAllItems();
+
+    res.status(200).json({
+      success: true,
+      data: items,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch items",
     });
   }
 };

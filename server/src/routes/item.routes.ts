@@ -1,10 +1,11 @@
 import { Router } from "express";
 
 import { authenticate } from "../middleware/auth.middleware";
-
-import { createItem } from "../controllers/item.controller";
+import { getItems, createItem } from "../controllers/item.controller";
 
 const router = Router();
+
+router.get("/", getItems);
 
 router.post(
   "/",
