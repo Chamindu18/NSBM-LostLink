@@ -1,21 +1,22 @@
-import { Response, NextFunction } from "express";
+import { Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
 import { AuthRequest } from "../types/authRequest.types";
 
-export const authenticate = (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
+export const authenticate: RequestHandler = (
+  req,
+  res,
+  next
 ) => {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         message: "Unauthorized",
       });
+      return;
     }
 
     const token = authHeader.split(" ")[1];
@@ -28,11 +29,11 @@ export const authenticate = (
       role: string;
     };
 
-    req.user = decoded;
+    (req as AuthRequest).user = decoded;
 
     next();
   } catch {
-    return res.status(401).json({
+    res.status(401).json({
       success: false,
       message: "Invalid token",
     });

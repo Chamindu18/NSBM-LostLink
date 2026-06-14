@@ -1,21 +1,19 @@
-import { Response } from "express";
+import { RequestHandler } from "express";
 
 import { AuthRequest } from "../types/authRequest.types";
-
 import { createItemSchema } from "../validators/item.validator";
-import { fetchAllItems } from "../services/item.service";
-import { createNewItem } from "../services/item.service";
+import { fetchAllItems, createNewItem } from "../services/item.service";
 
-export const createItem = async (
-  req: AuthRequest,
-  res: Response
+export const createItem: RequestHandler = async (
+  req,
+  res
 ) => {
   try {
     const validatedData = createItemSchema.parse(req.body);
 
     const item = await createNewItem(
       validatedData,
-      req.user!.userId
+      (req as AuthRequest).user!.userId
     );
 
     res.status(201).json({
@@ -34,9 +32,9 @@ export const createItem = async (
   }
 };
 
-export const getItems = async (
-  req: Request,
-  res: Response
+export const getItems: RequestHandler = async (
+  req,
+  res
 ) => {
   try {
     const items = await fetchAllItems();
@@ -45,7 +43,7 @@ export const getItems = async (
       success: true,
       data: items,
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({
       success: false,
       message: "Failed to fetch items",
