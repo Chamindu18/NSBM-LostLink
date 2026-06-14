@@ -14,6 +14,16 @@ export const createNewItem = async (
   return item;
 };
 
-export const fetchAllItems = async () => {
-  return getAllItems();
+export const fetchAllItems = async (
+  title?: string,
+  status?: string,
+  category?: string,
+  location?: string
+) => {
+  return getAllItems(
+    title,
+    status,
+    category,
+    location
+  );
 };

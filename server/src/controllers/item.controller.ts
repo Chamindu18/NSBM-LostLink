@@ -37,7 +37,19 @@ export const getItems: RequestHandler = async (
   res
 ) => {
   try {
-    const items = await fetchAllItems();
+    const {
+      title,
+      status,
+      category,
+      location,
+    } = req.query;
+
+const items = await fetchAllItems(
+  title as string,
+  status as string,
+  category as string,
+  location as string
+);
 
     res.status(200).json({
       success: true,

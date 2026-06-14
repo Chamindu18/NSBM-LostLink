@@ -16,21 +16,58 @@ export const createItem = async (
   });
 };
 
-export const getAllItems = async () => {
+export const getAllItems = async (
+  title?: string,
+  status?: string,
+  category?: string,
+  location?: string
+) => {
   return prisma.item.findMany({
+    where: {
+      ...(title && {
+        title: {
+          contains: title,
+          mode: "insensitive",
+        },
+      }),
+
+      ...(status && {
+        status: status as any,
+      }),
+
+      ...(category && {
+        category: {
+          name: {
+            equals: category,
+            mode: "insensitive",
+          },
+        },
+      }),
+
+      ...(location && {
+        location: {
+          name: {
+            equals: location,
+            mode: "insensitive",
+          },
+        },
+      }),
+    },
+
     include: {
       user: {
         select: {
           id: true,
           name: true,
-          email: true,
           studentId: true,
         },
       },
+
       category: true,
       location: true,
       images: true,
     },
+
     orderBy: {
       createdAt: "desc",
     },
