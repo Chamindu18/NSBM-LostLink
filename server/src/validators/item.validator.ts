@@ -8,3 +8,5 @@ export const createItemSchema = z.object({
   status: z.enum(["LOST", "FOUND"]),
   date: z.coerce.date(),
 });
+
+export const updateItemSchema = createItemSchema.partial();

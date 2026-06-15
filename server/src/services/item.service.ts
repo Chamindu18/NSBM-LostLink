@@ -1,17 +1,23 @@
-import { createItem } from "../repositories/item.repository";
-import { CreateItemInput } from "../types/item.types";
-import { getAllItems } from "../repositories/item.repository";
+import {
+  createItem,
+  getAllItems,
+  getItemById,
+  updateItem,
+} from "../repositories/item.repository";
+
+import {
+  CreateItemInput,
+  UpdateItemInput,
+} from "../types/item.types";
 
 export const createNewItem = async (
   data: CreateItemInput,
   userId: string
 ) => {
-  const item = await createItem({
+  return createItem({
     ...data,
     userId,
   });
-
-  return item;
 };
 
 export const fetchAllItems = async (
@@ -26,4 +32,34 @@ export const fetchAllItems = async (
     category,
     location
   );
+};
+
+export const fetchItemById = async (
+  itemId: string
+) => {
+  const item = await getItemById(itemId);
+
+  if (!item) {
+    throw new Error("Item not found");
+  }
+
+  return item;
+};
+
+export const updateExistingItem = async (
+  itemId: string,
+  data: UpdateItemInput,
+  userId: string
+) => {
+  const item = await getItemById(itemId);
+
+  if (!item) {
+    throw new Error("Item not found");
+  }
+
+  if (item.userId !== userId) {
+    throw new Error("Forbidden");
+  }
+
+  return updateItem(itemId, data);
 };

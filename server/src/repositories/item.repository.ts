@@ -1,16 +1,14 @@
 import prisma from "../config/prisma";
 
-export const createItem = async (
-  data: {
-    title: string;
-    description: string;
-    categoryId: string;
-    locationId: string;
-    status: "LOST" | "FOUND";
-    date: Date;
-    userId: string;
-  }
-) => {
+export const createItem = async (data: {
+  title: string;
+  description: string;
+  categoryId: string;
+  locationId: string;
+  status: "LOST" | "FOUND";
+  date: Date;
+  userId: string;
+}) => {
   return prisma.item.create({
     data,
   });
@@ -62,7 +60,6 @@ export const getAllItems = async (
           studentId: true,
         },
       },
-
       category: true,
       location: true,
       images: true,
@@ -70,6 +67,48 @@ export const getAllItems = async (
 
     orderBy: {
       createdAt: "desc",
+    },
+  });
+};
+
+export const getItemById = async (id: string) => {
+  return prisma.item.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          studentId: true,
+          email: true,
+        },
+      },
+      category: true,
+      location: true,
+      images: true,
+      claims: true,
+    },
+  });
+};
+
+export const updateItem = async (
+  id: string,
+  data: any
+) => {
+  return prisma.item.update({
+    where: {
+      id,
+    },
+    data,
+  });
+};
+
+export const deleteItem = async (id: string) => {
+  return prisma.item.delete({
+    where: {
+      id,
     },
   });
 };

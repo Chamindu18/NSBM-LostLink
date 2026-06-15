@@ -1,8 +1,18 @@
 import { RequestHandler } from "express";
 
 import { AuthRequest } from "../types/authRequest.types";
-import { createItemSchema } from "../validators/item.validator";
-import { fetchAllItems, createNewItem } from "../services/item.service";
+
+import {
+  createItemSchema,
+  updateItemSchema,
+} from "../validators/item.validator";
+
+import {
+  fetchAllItems,
+  createNewItem,
+  fetchItemById,
+  updateExistingItem,
+} from "../services/item.service";
 
 export const createItem: RequestHandler = async (
   req,
@@ -44,12 +54,12 @@ export const getItems: RequestHandler = async (
       location,
     } = req.query;
 
-const items = await fetchAllItems(
-  title as string,
-  status as string,
-  category as string,
-  location as string
-);
+    const items = await fetchAllItems(
+      title as string,
+      status as string,
+      category as string,
+      location as string
+    );
 
     res.status(200).json({
       success: true,
@@ -59,6 +69,60 @@ const items = await fetchAllItems(
     res.status(500).json({
       success: false,
       message: "Failed to fetch items",
+    });
+  }
+};
+
+export const getItem: RequestHandler = async (
+  req,
+  res
+) => {
+  try {
+    const item = await fetchItemById(
+      String(req.params.id)
+    );
+
+    res.status(200).json({
+      success: true,
+      data: item,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Item not found",
+    });
+  }
+};
+
+export const updateItem: RequestHandler = async (
+  req,
+  res
+) => {
+  try {
+    const validatedData =
+      updateItemSchema.parse(req.body);
+
+    const item = await updateExistingItem(
+      String(req.params.id),
+      validatedData,
+      (req as AuthRequest).user!.userId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Item updated successfully",
+      data: item,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Update failed",
     });
   }
 };
