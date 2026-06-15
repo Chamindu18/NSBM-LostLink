@@ -7,28 +7,31 @@ import {
   getItem,
   createItem,
   updateItem,
+  deleteItem,
 } from "../controllers/item.controller";
 
 const router = Router();
 
-// Get all items
 router.get("/", getItems);
 
-// Get single item
 router.get("/:id", getItem);
 
-// Create item
 router.post(
   "/",
   authenticate,
   createItem
 );
 
-// Update item
 router.put(
   "/:id",
   authenticate,
   updateItem
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  deleteItem
 );
 
 export default router;

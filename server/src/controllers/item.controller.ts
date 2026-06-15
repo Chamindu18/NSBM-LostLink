@@ -12,6 +12,7 @@ import {
   createNewItem,
   fetchItemById,
   updateExistingItem,
+  deleteExistingItem,
 } from "../services/item.service";
 
 export const createItem: RequestHandler = async (
@@ -123,6 +124,31 @@ export const updateItem: RequestHandler = async (
         error instanceof Error
           ? error.message
           : "Update failed",
+    });
+  }
+};
+
+export const deleteItem: RequestHandler = async (
+  req,
+  res
+) => {
+  try {
+    await deleteExistingItem(
+      String(req.params.id),
+      (req as AuthRequest).user!.userId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Item deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Delete failed",
     });
   }
 };

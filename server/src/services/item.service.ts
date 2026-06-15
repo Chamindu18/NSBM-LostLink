@@ -3,6 +3,7 @@ import {
   getAllItems,
   getItemById,
   updateItem,
+  deleteItem,
 } from "../repositories/item.repository";
 
 import {
@@ -62,4 +63,21 @@ export const updateExistingItem = async (
   }
 
   return updateItem(itemId, data);
+};
+
+export const deleteExistingItem = async (
+  itemId: string,
+  userId: string
+) => {
+  const item = await getItemById(itemId);
+
+  if (!item) {
+    throw new Error("Item not found");
+  }
+
+  if (item.userId !== userId) {
+    throw new Error("Forbidden");
+  }
+
+  await deleteItem(itemId);
 };
