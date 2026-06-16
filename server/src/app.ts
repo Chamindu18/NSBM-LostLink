@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.routes";
 import itemRoutes from "./routes/item.routes";
+import imageRoutes from "./routes/image.routes";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
+app.use("/api/images", imageRoutes);
 
 app.get("/", (req, res) => {
   res.send("NSBM LostLink API Running");
