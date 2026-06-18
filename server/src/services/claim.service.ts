@@ -9,6 +9,8 @@ import {
 
 import { getItemById } from "../repositories/item.repository";
 
+import { createNewNotification } from "./notification.service";
+
 export const createNewClaim = async (
   message: string,
   userId: string,
@@ -38,6 +40,12 @@ export const createNewClaim = async (
   await updateItemStatus(
     itemId,
     "CLAIM_PENDING"
+  );
+
+  await createNewNotification(
+    item.userId,
+    "SYSTEM",
+    "Someone submitted a claim for your item."
   );
 
   return claim;
@@ -80,6 +88,12 @@ export const approveExistingClaim =
       "RETURNED"
     );
 
+    await createNewNotification(
+      claim.userId,
+      "CLAIM_APPROVED",
+      "Your claim has been approved."
+    );
+
     return getClaimById(claimId);
   };
 
@@ -100,6 +114,12 @@ export const rejectExistingClaim =
     await updateItemStatus(
       claim.itemId,
       "FOUND"
+    );
+
+    await createNewNotification(
+      claim.userId,
+      "CLAIM_REJECTED",
+      "Your claim has been rejected."
     );
 
     return getClaimById(claimId);
