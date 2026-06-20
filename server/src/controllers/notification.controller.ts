@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 
-import { AuthRequest } from "../types/authRequest.types";
+import { AuthRequest } from "../services/types/authRequest.types";
 
 import {
   fetchUserNotifications,

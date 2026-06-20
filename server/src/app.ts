@@ -7,6 +7,7 @@ import itemRoutes from "./routes/item.routes";
 import imageRoutes from "./routes/image.routes";
 import claimRoutes from "./routes/claim.routes";
 import notificationRoutes from "./routes/notification.routes";
+import matchRoutes from "./routes/match.routes";
 
 dotenv.config();
 
@@ -28,6 +29,10 @@ app.use("/api/claims", claimRoutes);
 app.use(
   "/api/notifications",
   notificationRoutes
+);
+app.use(
+  "/api/matches",
+  matchRoutes
 );
 
 app.get("/", (req, res) => {

@@ -9,7 +9,7 @@ import {
 import {
   CreateItemInput,
   UpdateItemInput,
-} from "../types/item.types";
+} from "./types/item.types";
 
 export const createNewItem = async (
   data: CreateItemInput,
