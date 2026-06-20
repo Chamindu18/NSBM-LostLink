@@ -1,7 +1,7 @@
 import { Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
-import { AuthRequest } from "../services/types/authRequest.types";
+import { AuthRequest } from "../types/authRequest.types";
 
 export const authenticate: RequestHandler = (
   req,

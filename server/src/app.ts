@@ -8,6 +8,7 @@ import imageRoutes from "./routes/image.routes";
 import claimRoutes from "./routes/claim.routes";
 import notificationRoutes from "./routes/notification.routes";
 import matchRoutes from "./routes/match.routes";
+import adminRoutes from "./routes/admin.routes";
 
 dotenv.config();
 
@@ -33,6 +34,10 @@ app.use(
 app.use(
   "/api/matches",
   matchRoutes
+);
+app.use(
+  "/api/admin",
+  adminRoutes
 );
 
 app.get("/", (req, res) => {
