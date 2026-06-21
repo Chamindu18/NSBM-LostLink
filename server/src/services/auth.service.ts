@@ -11,7 +11,7 @@ import {
 import {
   RegisterInput,
   LoginInput,
-} from "./types/auth.types";
+} from "../types/auth.types";
 
 export const registerUser = async (data: RegisterInput) => {
   // Check if email already exists

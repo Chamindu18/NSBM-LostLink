@@ -7,7 +7,7 @@ import { registerSchema } from "../validators/auth.validator";
 import { loginUser } from "../services/auth.service";
 import { loginSchema } from "../validators/auth.validator";
 
-import { AuthRequest } from "../services/types/authRequest.types";
+import { AuthRequest } from "../types/authRequest.types";
 import { getCurrentUser } from "../services/auth.service";
 
 export const login = async (
